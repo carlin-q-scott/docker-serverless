@@ -1,20 +1,43 @@
 # docker-serverless
+
 A simple container for running serverless commands
 
-# How to Use
+## How to Use
 
-Regardless of your OS (Linux, Windows), start by setting up environment variables for your Cloud Environment. I provide examples for AWS below but other environments will be similar. 
+### Windows
 
-You can also optionally supply the environment variables in the command at step #3 by appending `=your_key` to the end of each -e argument.
-
-## Windows
-1. Open the Windows command prompt; don't use Powershell.
+1. Open the Windows Powershell.
 2. Navigate to your source directory containing your serverless.yml configuration file.
-3. Run this command, adding what serverless command you want to run on the end:  
-   `docker run -it --rm -v %CD%:/src -w /src -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY carlin/serverless sls`
+3. Run this command, adding what serverless command you want to run on the end:
 
-## Linux
+With AWS CLI installed localled:
+
+```ps
+docker run -it --rm -v $env:USERPROFILE/.aws:/root/.aws -v $pwd/:/src carlin/serverless sls
+```
+
+Without AWS CLI:
+
+```ps
+docker run -it --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -v $pwd/:/src carlin/serverless sls
+```
+
+You can generate the two KEYs used in the command above from the AWS Console website. They're called API Keys and are found in your user profile in IAM.
+
+### Linux
+
 1. Open the Linux terminal.
 2. Navigate to your source directory containing your serverless.yml configuration file.
-3. Run this command, adding what serverless command you want to run on the end: 
-   `docker run -it --rm -v $(pwd):/src -w /src -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY carlin/serverless sls`
+3. Run this command, adding what serverless command you want to run on the end:
+
+```sh
+docker run -it --rm -v $HOME/.aws:/root/.aws -v $(pwd):/src carlin/serverless sls
+```
+
+Without AWS CLI:
+
+```sh
+docker run -it --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -v $(pwd):/src carlin/serverless sls
+```
+
+You can generate the two KEYs used in the command above from the AWS Console website. They're called API Keys and are found in your user profile in IAM.
